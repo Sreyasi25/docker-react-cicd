@@ -1,0 +1,21 @@
+sudo: required   #for docker we need superuser lavel permission, so we are telling travis the same
+language: generic
+
+
+#telling travis the software we need in container
+services:
+  - docker
+
+
+#series of step we need to perform before running the test or deploy the application
+# 1. we need to put tag, because name will be used for furture steps
+# 2. we need to build the dockerfile.dev.
+# 
+before_install:
+  - docker build -t vipinsingh/docker-react -f Dockerfile.dev . 
+
+#script to execute the test
+script:
+  - docker run -e CI=true vipinsingh/docker-react npm run test
+
+
